@@ -670,7 +670,7 @@ class _NoteBookViewState extends State<NoteBookView> {
           "attandance": attandance,
           "defecate": defecate,
           "id": contactID,
-          "file": null,
+          "file": image != null ? null : "none",
           "morningFoodEat": morningFoodEat,
           "physicalCondition": physicalCondition,
           "sleep": sleep,
