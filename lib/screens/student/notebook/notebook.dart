@@ -56,21 +56,28 @@ class _NotebookStudentState extends State<NotebookStudent> {
       client: client,
       child: Scaffold(
         body: Query(
-            options: QueryOptions(document: gql('''
-      query todaysStudentContactBooks {
-        todaysStudentContactBooks (student: $id) {
-          id
-          file
-          attandance
-          physicalCondition
-          sleep
-          morningFoodEat
-          defecate
-          wordToSay
-          date
-        }
-      }
-      ''')),
+            options: QueryOptions(
+                document: gql(
+                  '''
+                    query (\$id: ID) {
+                      todaysStudentContactBooks(student: \$id) {
+                        id
+                        file
+                        attandance
+                        physicalCondition
+                        sleep
+                        morningFoodEat
+                        defecate
+                        wordToSay
+                        date
+                      }
+                    }
+                  ''',
+                ),
+                fetchPolicy: FetchPolicy.networkOnly,
+                variables: {
+                  "id": id,
+                }),
             builder: (QueryResult result, {fetchMore, refetch}) {
               if (result.hasException) {
                 return Text(result.exception.toString());

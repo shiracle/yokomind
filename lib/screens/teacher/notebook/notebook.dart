@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:yoko_mind/theme/color.dart';
 import 'package:yoko_mind/widgets/inputPass.dart';
 import 'package:yoko_mind/widgets/inputs.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:yoko_mind/widgets/parentsInput.dart';
@@ -26,6 +28,27 @@ class NoteBookView extends StatefulWidget {
 }
 
 class _NoteBookViewState extends State<NoteBookView> {
+  @override
+  void initState() {
+    // TODO: ene nuguu query shuu
+    getInfo(widget.id);
+    super.initState();
+  }
+
+  bool loading = false;
+  final ImagePicker picker = ImagePicker();
+
+  XFile? image;
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+    setState(() {
+      image = img;
+    });
+  }
+
+  Map<dynamic, dynamic>? contactInfo;
+
   List<String> get _listTextTabToggle => ["Ирсэн", "Чөлөөтэй", "Өвчтэй"];
 
   List<String> get _listTextSelectedToggle => ["Муу", "Дунд", "Сайн"];
@@ -37,6 +60,7 @@ class _NoteBookViewState extends State<NoteBookView> {
   TextEditingController physicalController = TextEditingController();
 
   TextEditingController parentsController = TextEditingController();
+  // TODO: irsen datag contactinfo deer hadgalj baigaa tul null shalgaad door utguud deer nemj uguurei
   bool edited = false;
   int selectedValue = 0;
   bool sleep = false;
@@ -490,20 +514,12 @@ class _NoteBookViewState extends State<NoteBookView> {
                             // limitString: 200,
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: image == null
+                                ? () => getImage(ImageSource.gallery)
+                                : null,
                             child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 16),
                               alignment: Alignment.center,
-                              child: Text(
-                                "Зураг оруулах",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: size.height * 0.018,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w600,
-                                  height: 0,
-                                ),
-                              ),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   width: 2,
@@ -513,6 +529,21 @@ class _NoteBookViewState extends State<NoteBookView> {
                               ),
                               width: size.width * .8,
                               height: size.height * .15,
+                              child: image != null
+                                  ? Image.file(
+                                      File(image!.path),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Text(
+                                      "Зураг оруулах",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: size.height * 0.018,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w600,
+                                        height: 0,
+                                      ),
+                                    ),
                             ),
                           )
                         ],
@@ -536,15 +567,32 @@ class _NoteBookViewState extends State<NoteBookView> {
           children: [
             InkWell(
               onTap: () {
-                formKey.currentState?.save();
-                String physicalCondition = physicalController.text.trim();
-                String defecate = tailbarController.text.trim();
-                String morningFoodEat = test2.toString().trim();
-                String attandance = test.toString().trim();
-                String sleep = test1.toString().trim();
-                String wordToSay = parentsController.text.trim();
-                signUp(physicalCondition, defecate, morningFoodEat, sleep,
-                    attandance, wordToSay);
+                if (contactInfo != null) {
+                  formKey.currentState?.save();
+                  String physicalCondition = physicalController.text.trim();
+                  String defecate = tailbarController.text.trim();
+                  String morningFoodEat = test2.toString().trim();
+                  String attandance = test.toString().trim();
+                  String sleep = test1.toString().trim();
+                  String wordToSay = parentsController.text.trim();
+                  signUp(
+                    physicalCondition,
+                    defecate,
+                    morningFoodEat,
+                    sleep,
+                    attandance,
+                    wordToSay,
+                    contactInfo!["id"],
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -574,65 +622,153 @@ class _NoteBookViewState extends State<NoteBookView> {
     );
   }
 
+// TODO: ene boltson zarim neg loading yumuu tiimerhuu yum hiiheer bol dutuu baigaa shuu
   Future<void> signUp(
-      String physicalCondition,
-      String defecate,
-      String morningFoodEat,
-      String sleep,
-      String attandance,
-      String wordToSay) async {
+    String physicalCondition,
+    String defecate,
+    String morningFoodEat,
+    String sleep,
+    String attandance,
+    String wordToSay,
+    String contactID,
+  ) async {
     Map<String, dynamic> resultdata;
     var response;
-    print("423 $indexSelected");
+    print(widget.id);
     try {
       var url = '$UrlBase:8002/graphql';
 
-      Map data = {
+      final operations = {
         'query': '''
-mutation updateStudentContactBook {
-  updateStudentContactBook (
-    attandance: "${attandance}"
-    defecate: "${defecate}"
-    id: ${widget.id}
-    file: none
-    morningFoodEat: "${morningFoodEat}"
-    physicalCondition: "${physicalCondition}"
-    sleep: "${sleep}"
-    wordToSay: "${wordToSay}"
-  ) {
-    studentContactBook {
-      id
-    }
-  }
-}''',
+          mutation(
+            \$attandance: String!
+            \$defecate: String!
+            \$id: ID!
+            \$file: Upload!
+            \$morningFoodEat: String!
+            \$physicalCondition: String!
+            \$sleep: String!
+            \$wordToSay: String!
+          ) {
+            updateStudentContactBook(
+              attandance: \$attandance
+              defecate: \$defecate
+              id: \$id
+              file: \$file
+              morningFoodEat: \$morningFoodEat
+              physicalCondition: \$physicalCondition
+              sleep: \$sleep
+              wordToSay: \$wordToSay
+            ) {
+              studentContactBook {
+                id
+              }
+            }
+          }
+        ''',
+        'variables': {
+          "attandance": attandance,
+          "defecate": defecate,
+          "id": contactID,
+          "file": null,
+          "morningFoodEat": morningFoodEat,
+          "physicalCondition": physicalCondition,
+          "sleep": sleep,
+          "wordToSay": wordToSay,
+        }
       };
 
-      var body = (data);
-      print(data);
-      final response = await http.post(Uri.parse(url),
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": 'JWT ${widget.token}'
-          },
-          body: body);
-      if (response.body.isNotEmpty == true) {
-        resultdata = json.decode(response.body);
-        if (resultdata.isNotEmpty == true) {
-          print("amjilttai");
-          print(resultdata);
-        } else {
+      final map = {
+        '0': ['variables.file']
+      };
+
+      final request = http.MultipartRequest('POST', Uri.parse(url))
+        ..headers['Authorization'] = 'JWT ${widget.token}'
+        ..fields['operations'] = json.encode(operations)
+        ..fields['map'] = json.encode(map)
+        ..files.add(await http.MultipartFile.fromPath(
+          '0',
+          image!.path,
+        ));
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body)['data'];
+        if (data["updateStudentContactBook"]["studentContactBook"] != null) {
           Fluttertoast.showToast(
-            msg: "Хүсэлт амжилтгүй боллоо",
+            msg: "Амжилттай",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red, //Colors.red,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
           );
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        } else {
+          Fluttertoast.showToast(
+            msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
         }
+      } else {
+        throw Exception('Failed to upload image');
       }
     } catch (e, _) {
       debugPrint(e.toString());
     }
     return response;
+  }
+
+  Future<void> getInfo(String studentID) async {
+    var url = '$UrlBase:8002/graphql';
+
+    final operations = {
+      'query': '''
+          query(\$studentID: ID!){
+            todaysStudentContactBooks(student: \$studentID){
+              id
+              file
+              attandance
+              contactBook{
+                id
+              }
+              physicalCondition
+              sleep
+              morningFoodEat
+              defecate
+              wordToSay
+              date
+            }
+          }
+        ''',
+      'variables': {
+        "studentID": studentID,
+      }
+    };
+
+    final request = http.MultipartRequest('POST', Uri.parse(url))
+      ..headers['Authorization'] = 'JWT ${widget.token}'
+      ..fields['operations'] = json.encode(operations);
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)['data'];
+      setState(() {
+        contactInfo = data["todaysStudentContactBooks"];
+      });
+    } else {
+      throw Exception('error');
+    }
   }
 }
