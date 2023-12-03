@@ -42,10 +42,8 @@ class _NotebookStudentState extends State<NotebookStudent> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    String token1 =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImswMDEiLCJleHAiOjE3MDE0OTg3NjQsIm9yaWdJYXQiOjE3MDE0OTg0NjR9.w59JuBRfZlnfCap4SZEhSifoOwTwp00gptYLB76jS0M";
     final HttpLink httpLink = HttpLink("$UrlBase:8002/graphql");
-    final AuthLink authLink = AuthLink(getToken: () => 'JWT ${token1}');
+    final AuthLink authLink = AuthLink(getToken: () => 'JWT ${token}');
     final Link link = authLink.concat(httpLink);
     ValueNotifier<GraphQLClient> client = ValueNotifier(GraphQLClient(
       link: link,
@@ -202,7 +200,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
                             ),
                             Container(
                               height: size.height * .04,
-                              width: size.width * .2,
+                              width: size.width * .3,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               alignment: Alignment.center,
@@ -451,21 +449,22 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                 ),
                               ),
                               Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 2,
-                                    color: AppColor.outLine,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 2,
+                                      color: AppColor.outLine,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                width: size.width * .8,
-                                height: size.height * .15,
-                                child: const Icon(
-                                  size: 40,
-                                  Icons.hide_image_outlined,
-                                  color: AppColor.outLine,
-                                ),
-                              )
+                                  width: size.width * .8,
+                                  height: size.height * .15,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.network(
+                                      "http://yokomine.metasoft.mn:8002/media/${list['file']}",
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ))
                             ],
                           ),
                         ),

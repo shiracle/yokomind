@@ -66,9 +66,9 @@ class _NoteBookViewState extends State<NoteBookView> {
   bool sleep = false;
   bool food = false;
   int indexSelected = 0;
-  String test = "";
-  String test1 = "";
-  String test2 = "";
+  String test = "ARRIVED";
+  String test1 = "BAD";
+  String test2 = "BAD";
   int noirSelect = 0;
   int foodSelect = 0;
 
@@ -532,7 +532,7 @@ class _NoteBookViewState extends State<NoteBookView> {
                               child: image != null
                                   ? Image.file(
                                       File(image!.path),
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     )
                                   : Text(
                                       "Зураг оруулах",
