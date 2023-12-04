@@ -1,9 +1,12 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:yoko_mind/screens/contact/contact.dart';
 import 'package:yoko_mind/screens/student/handtohand/hand_to_hand.dart';
 import 'package:yoko_mind/screens/student/home/home.dart';
 import 'package:yoko_mind/screens/student/notebook/notebook.dart';
 import 'package:yoko_mind/theme/color.dart';
+
+import 'everyday/everyday.dart';
 
 class StudentView extends StatefulWidget {
   final token;
@@ -17,21 +20,12 @@ class StudentView extends StatefulWidget {
 class _StudentViewState extends State<StudentView> {
   int _selectedIndex = 0;
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   static const List<Widget> _widgetOptions = <Widget>[
     HomeView(),
     HandToHandView(),
     NotebookStudent(),
-    Text(
-      'Index 2: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Business',
-      style: optionStyle,
-    ),
+    NestedTabBar(),
+    Contact()
   ];
 
   void _onItemTapped(int index) {

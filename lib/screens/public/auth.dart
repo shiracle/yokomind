@@ -131,15 +131,21 @@ class _AuthPageState extends State<AuthPage> {
     try {
       var url = '$UrlBase:8002/graphql';
       Map data = {
-        'query': '''mutation {
+        'query':
+            '''mutation {
   tokenAuth (username:"$u1", password:"$u2") {
     token
     success
     user {
+    firstName
+    lastName
     isTeacher
     isStudent
     student{
         id
+        section{
+          section
+        }
       }
       teacher {
         sectionSet {
@@ -172,8 +178,13 @@ class _AuthPageState extends State<AuthPage> {
                 MaterialPageRoute(
                     builder: (context) => TeacherHomeView(token)));
           } else {
-            saveInfo(resultdata['data']['tokenAuth']['token'],
-                resultdata['data']['tokenAuth']['user']['student']['id']);
+            saveInfo(
+                resultdata['data']['tokenAuth']['token'],
+                resultdata['data']['tokenAuth']['user']['student']['id'],
+                resultdata['data']['tokenAuth']['user']['firstName'],
+                resultdata['data']['tokenAuth']['user']['lastName'],
+                resultdata['data']['tokenAuth']['user']['student']['section']
+                    ['section']);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => StudentView(token)));
           }
@@ -207,18 +218,19 @@ class _AuthPageState extends State<AuthPage> {
   Future<void> saveInfo(
     String token,
     String studentId,
-    // String firstName,
-    // String lastName,
-    // String username,
+    String firstName,
+    String lastName,
+    String buleg,
     // String photo
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString("token", token);
       prefs.setString("studentId", studentId);
-      // prefs.setString("lastName", lastName);
-      // prefs.setString("photo", photo);
-      // prefs.setString("username", username);
+      prefs.setString("firstName", firstName);
+      prefs.setString("lastName", lastName);
+      prefs.setString("buleg", buleg);
+
       // prefs.setString("name", name);
       prefs.setBool("isLogin", true);
     });

@@ -670,7 +670,7 @@ class _NoteBookViewState extends State<NoteBookView> {
           "attandance": attandance,
           "defecate": defecate,
           "id": contactID,
-          "file": null,
+          "file": image != null ? null : "none",
           "morningFoodEat": morningFoodEat,
           "physicalCondition": physicalCondition,
           "sleep": sleep,
@@ -696,6 +696,7 @@ class _NoteBookViewState extends State<NoteBookView> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body)['data'];
+        print("dataa $data");
         if (data["updateStudentContactBook"]["studentContactBook"] != null) {
           Fluttertoast.showToast(
             msg: "Амжилттай",
@@ -708,6 +709,7 @@ class _NoteBookViewState extends State<NoteBookView> {
             Navigator.pop(context);
           }
         } else {
+          print(data);
           Fluttertoast.showToast(
             msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
             toastLength: Toast.LENGTH_LONG,

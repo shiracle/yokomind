@@ -14,6 +14,9 @@ class NotebookStudent extends StatefulWidget {
 class _NotebookStudentState extends State<NotebookStudent> {
   String token = "";
   String id = "";
+  String firstName = "";
+  String lastName = '';
+  String buleg = "";
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) => _tokens());
@@ -25,9 +28,13 @@ class _NotebookStudentState extends State<NotebookStudent> {
     setState(() {
       token = prefs.getString('token') ?? '';
       id = prefs.getString('studentId') ?? '';
+      firstName = prefs.getString('firstName') ?? '';
+      lastName = prefs.getString('lastName') ?? '';
+      buleg = prefs.getString("buleg") ?? '';
     });
     print("token $token");
     print("id $id");
+    print("lastnMe $lastName");
   }
 
   // final _formKey = GlobalKey<FormState>();
@@ -53,7 +60,74 @@ class _NotebookStudentState extends State<NotebookStudent> {
     return GraphQLProvider(
       client: client,
       child: Scaffold(
-          body: id.isEmpty
+          appBar: AppBar(
+              // shape: const RoundedRectangleBorder(
+              //     borderRadius:
+              //         BorderRadius.vertical(bottom: Radius.circular(20))),
+              backgroundColor: Colors.white,
+              // leading: IconButton(
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     icon: const Icon(
+              //       Icons.arrow_back,
+              //       color: AppColor.background,
+              //     )),
+              elevation: 0,
+              shadowColor: Colors.white,
+              toolbarHeight: size.height * .1,
+              title: SizedBox(
+                  width: size.width,
+                  height: size.height * 0.1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        foregroundImage: AssetImage("assets/pro.png"),
+                        radius: 35,
+                      ),
+                      SizedBox(
+                        width: size.width * 0.1,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "$firstName $lastName",
+                            style: const TextStyle(
+                              color: Color(0xFF1B1464),
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                          const Text(
+                            '5 настай',
+                            style: TextStyle(
+                              color: Color(0xFF1B1464),
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                              height: 0,
+                            ),
+                          ),
+                          Text(
+                            "$buleg-н сурагч",
+                            style: const TextStyle(
+                              color: Color(0xFF1B1464),
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                              height: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))),
+          body: id.isNotEmpty
               ? Query(
                   options: QueryOptions(
                       document: gql(
@@ -162,7 +236,8 @@ class _NotebookStudentState extends State<NotebookStudent> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 alignment: Alignment.topLeft,
                                 child: const Text(
                                   'Ирц бүртгэл ',
@@ -245,7 +320,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 20),
                                     Container(
                                       height: size.height * .06,
                                       width: size.width * .8,
@@ -285,7 +360,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         'Бие зассан эсэх',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: size.height * 0.021,
+                                          fontSize: size.height * 0.019,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w600,
                                           height: 0,
@@ -328,7 +403,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         'Өдөр унтсан эсэх',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: size.height * 0.021,
+                                          fontSize: size.height * 0.019,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w600,
                                           height: 0,
@@ -368,7 +443,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         'Өглөөний цай',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: size.height * 0.021,
+                                          fontSize: size.height * 0.019,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w600,
                                           height: 0,
@@ -402,12 +477,12 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                     Container(
                                       width: size.width * .8,
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
+                                          vertical: 10),
                                       child: Text(
                                         "Эцэг эхэд хэлэх үг",
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: size.height * 0.021,
+                                          fontSize: size.height * 0.019,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w600,
                                           height: 0,
@@ -440,12 +515,12 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                     Container(
                                       width: size.width * .8,
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
+                                          vertical: 10),
                                       child: Text(
                                         "Зураг ",
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: size.height * 0.021,
+                                          fontSize: size.height * 0.019,
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w600,
                                           height: 0,
@@ -465,10 +540,12 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         height: size.height * .15,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Image.network(
-                                            "http://yokomine.metasoft.mn:8002/media/${list['file']}",
-                                            fit: BoxFit.fill,
-                                          ),
+                                          child: list['file'] == ""
+                                              ? Image.asset("assets/logo.png")
+                                              : Image.network(
+                                                  "http://yokomine.metasoft.mn:8002/media/${list['file']}",
+                                                  fit: BoxFit.fill,
+                                                ),
                                         ))
                                   ],
                                 ),
@@ -480,7 +557,9 @@ class _NotebookStudentState extends State<NotebookStudent> {
                     );
                   })
               : const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 )),
     );
   }
