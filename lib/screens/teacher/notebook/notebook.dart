@@ -60,7 +60,6 @@ class _NoteBookViewState extends State<NoteBookView> {
   TextEditingController physicalController = TextEditingController();
 
   TextEditingController parentsController = TextEditingController();
-  // TODO: irsen datag contactinfo deer hadgalj baigaa tul null shalgaad door utguud deer nemj uguurei
   bool edited = false;
   int selectedValue = 0;
   bool sleep = false;

@@ -32,12 +32,20 @@ class _StudentDetailState extends State<StudentDetail> {
                 options: QueryOptions(document: gql('''
 query studentById {
   studentById (id: ${widget.id}) {
-    registerNo
     familyName
     name
+    registerNo
+    bloodType
     birthdate
+    photo
     phone
     address
+    bodyIndex
+    vaccine
+    drug
+    allergies
+    underlyingDisease
+    etc
     section {
       section
     }
@@ -169,9 +177,9 @@ query studentById {
                                     Positioned(
                                       left: size.width * .4,
                                       top: size.height * .16,
-                                      child: const Text(
-                                        'Цусны бүлэг: ',
-                                        style: TextStyle(
+                                      child: Text(
+                                        'Цусны бүлэг: ${list['bloodType']} ',
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
                                           fontFamily: 'Inter',
@@ -231,11 +239,23 @@ query studentById {
                                   top: size.height * .005,
                                   left: size.width * .05,
                                   right: size.width * .05),
-                              child: const Row(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Овог Нэр:',
+                                  const Text(
+                                    'Овог Нэр: ',
                                     style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${list['familyName']}',
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontFamily: 'Inter',
@@ -399,9 +419,11 @@ query studentById {
                                   top: size.height * .005,
                                   left: size.width * .05,
                                   right: size.width * .05),
-                              child: const Row(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Биеийн индекс:',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -410,6 +432,16 @@ query studentById {
                                       fontWeight: FontWeight.w600,
                                       height: 0,
                                     ),
+                                  ),
+                                  Text(
+                                    list['bodyIndex'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
                                   )
                                 ],
                               ),
@@ -419,9 +451,11 @@ query studentById {
                                   top: size.height * .005,
                                   left: size.width * .05,
                                   right: size.width * .05),
-                              child: const Row(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Вакцин:',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -430,6 +464,16 @@ query studentById {
                                       fontWeight: FontWeight.w600,
                                       height: 0,
                                     ),
+                                  ),
+                                  Text(
+                                    list['vaccine'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
                                   )
                                 ],
                               ),
@@ -439,9 +483,11 @@ query studentById {
                                   top: size.height * .005,
                                   left: size.width * .05,
                                   right: size.width * .05),
-                              child: const Row(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Тогтмол уудаг эм:',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -450,20 +496,10 @@ query studentById {
                                       fontWeight: FontWeight.w600,
                                       height: 0,
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: size.height * .005,
-                                  left: size.width * .05,
-                                  right: size.width * .05),
-                              child: const Row(
-                                children: [
+                                  ),
                                   Text(
-                                    'Харшил:',
-                                    style: TextStyle(
+                                    list['drug'],
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontFamily: 'Inter',
@@ -479,11 +515,55 @@ query studentById {
                                   top: size.height * .005,
                                   left: size.width * .05,
                                   right: size.width * .05),
-                              child: const Row(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  const Text(
+                                    'Харшил:',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
+                                  ),
                                   Text(
+                                    list['allergies'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: size.height * .005,
+                                  left: size.width * .05,
+                                  right: size.width * .05),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
                                     'Суурь өвчин:',
                                     style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w600,
+                                      height: 0,
+                                    ),
+                                  ),
+                                  Text(
+                                    list['underlyingDisease'],
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontFamily: 'Inter',
@@ -540,10 +620,10 @@ query studentById {
                                 alignment: Alignment.center,
                                 width: size.width * .74,
                                 height: size.height * .13,
-                                child: const SingleChildScrollView(
+                                child: SingleChildScrollView(
                                   child: Text(
-                                    'Хоосон байна',
-                                    style: TextStyle(
+                                    list['etc'],
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
                                       fontFamily: 'Inter',
