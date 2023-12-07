@@ -46,6 +46,7 @@ dependencies:
   flutter_toggle_tab: ^1.4.1
   http: ^0.13.6
   image_picker: ^1.0.4
+  intl: ^0.18.1
   
 dev_dependencies:
   flutter_test:

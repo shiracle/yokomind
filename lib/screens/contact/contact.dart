@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoko_mind/api/api.dart';
 import 'package:yoko_mind/theme/color.dart';
@@ -40,6 +41,7 @@ class _ContactState extends State<Contact> {
       lastName = prefs.getString('lastName') ?? '';
       buleg = prefs.getString("buleg") ?? '';
     });
+    print(DateFormat('y-M-d').format(DateTime.now()));
   }
 
   @override
