@@ -3,8 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yoko_mind/api/api.dart';
 import 'package:yoko_mind/theme/color.dart';
 
 class QrReader extends StatefulWidget {
@@ -35,10 +38,11 @@ class _QrReaderState extends State<QrReader> {
   @override
   Widget build(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      // if (Barcode != null) {
-      // String? url = barcode?.code;
-      //TODO: on qr code found functions
-      // }
+      // ignore: unnecessary_null_comparison
+      if (Barcode != null) {
+        controller!.pauseCamera();
+        // String? url = barcode?.code;
+      }
     });
     return Scaffold(
       body: Stack(
@@ -86,23 +90,6 @@ class _QrReaderState extends State<QrReader> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // IconButton(
-          //   onPressed: () async {
-          //     await controller?.toggleFlash();
-          //     setState(() {});
-          //   },
-          //   icon: FutureBuilder<bool?>(
-          //     future: controller?.getFlashStatus(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.data != null) {
-          //         return Icon(
-          //             snapshot.data! ? Icons.flash_on : Icons.flash_off);
-          //       } else {
-          //         return Container();
-          //       }
-          //     },
-          //   ),
-          // ),
           IconButton(
             onPressed: () async {
               await controller?.flipCamera();
@@ -131,45 +118,32 @@ class _QrReaderState extends State<QrReader> {
     controller.scannedDataStream
         .listen((barcode) => setState(() => this.barcode = barcode));
   }
-// TODO: take ref from here
-  // Future<void> sendRequest(userIdCode) async {
-  //   final check = http.MultipartRequest(
-  //     'POST',
-  //     Uri.parse(EnviConfig.apiUrl),
-  //   );
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? token = prefs.getString('token');
 
-  //   check.headers['Authorization'] = 'JWT $token';
-  //   final checkOperations = {
-  //     'query': ShareGraphQl.share,
-  //     "variables": {
-  //       "id": userIdCode,
-  //     }
-  //   };
-  //   check.fields['operations'] = json.encode(checkOperations);
-  //   final checkStreamedResponse = await check.send();
-  //   final checkResponse = await http.Response.fromStream(checkStreamedResponse);
-  //   if (checkResponse.statusCode == 200) {
-  //     final data = json.decode(checkResponse.body)['data']['sendToMe'];
-  //     if (data != null) {
-  //       if (data['success']) {
-  //         if (context.mounted) {
-  //           Navigator.of(context).pushReplacementNamed(
-  //             '/user',
-  //             arguments: {"userID": userIdCode, "owner": false},
-  //           );
-  //         }
-  //       } else {
-  //         if (context.mounted) Navigator.pop(context);
-  //       }
-  //     } else {
-  //       if (context.mounted) Navigator.pop(context);
-  //     }
-  //   } else {
-  //     throw Exception('Failed to add');
-  //   }
-  // }
+  Future<void> sendRequest(userIdCode) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? "";
+    bool result = await SendRequests.setHandOverSuccessed(token, userIdCode);
+    if (result) {
+      Fluttertoast.showToast(
+        msg: "Амжилттай",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "Амжилтгүй",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   void dispose() {

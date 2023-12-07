@@ -54,7 +54,7 @@ class _StudentViewState extends State<StudentView> {
           backgroundColor: AppColor.outLine,
           style: TabStyle.react,
           initialActiveIndex: 0,
-          height: 70,
+          height: size.height * .075,
           top: -15,
           items: [
             const TabItem(

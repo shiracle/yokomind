@@ -1,14 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yoko_mind/api/api.dart';
 import 'package:yoko_mind/main.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:yoko_mind/theme/color.dart';
 
 class HandToHandView extends StatefulWidget {
@@ -63,15 +60,17 @@ class _HandToHandViewState extends State<HandToHandView> {
           backgroundColor: AppColor.outLine,
           body: id.isNotEmpty
               ? Query(
-                  options: QueryOptions(document: gql('''
-query studentHandoverByDate {
-  studentHandoverByDate (student:${id}){
-    date
-    isSuccessed
-    isNotified
-    code
-  }
-}''')),
+                  options: QueryOptions(
+                    document: gql('''
+                    query studentHandoverByDate {
+                      studentHandoverByDate (student:${id}){
+                        date
+                        isSuccessed
+                        isNotified
+                        code
+                      }
+                    }'''),
+                  ),
                   builder: (QueryResult result, {fetchMore, refetch}) {
                     if (result.hasException) {
                       return Text(result.exception.toString());
@@ -139,25 +138,13 @@ query studentHandoverByDate {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    fixedSize: Size(
-                                        size.width * .5, size.height * .06)),
-                                onPressed: () {},
-                                child: Text(
-                                  'Нууц код үүсгэх',
-                                  style: TextStyle(
-                                    fontSize: size.height * .02,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
+                              CodeButton(code: list['code']),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       fixedSize: Size(
                                           size.width * .5, size.height * .06)),
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      notifyTeacher(token, list['code']),
                                   child: Text(
                                     'Багшид мэдэгдэх',
                                     style: TextStyle(
@@ -236,4 +223,62 @@ class BorderClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+Future<void> notifyTeacher(String token, String userCode) async {
+  bool result = await SendRequests.studentHandoverByDate(token, userCode);
+  if (result) {
+    Fluttertoast.showToast(
+      msg: "Амжилттай",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+    );
+  } else {
+    Fluttertoast.showToast(
+      msg: "Амжилтгүй",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+  }
+}
+
+class CodeButton extends StatefulWidget {
+  final String code;
+  const CodeButton({
+    super.key,
+    required this.code,
+  });
+
+  @override
+  State<CodeButton> createState() => _CodeButtonState();
+}
+
+class _CodeButtonState extends State<CodeButton> {
+  bool handoverCodeShow = true;
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          fixedSize: Size(size.width * .5, size.height * .06)),
+      onPressed: () {
+        setState(() {
+          handoverCodeShow = !handoverCodeShow;
+        });
+      },
+      child: Text(
+        handoverCodeShow ? 'Нууц код үүсгэх' : widget.code,
+        style: TextStyle(
+          fontSize: size.height * .02,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
 }

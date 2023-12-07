@@ -261,13 +261,13 @@ query routines {
                                     ),
                                   ),
                                   SizedBox(
-                                      height: size.height * .6,
+                                      height: size.height * .565,
                                       child: ListView.builder(
                                         itemCount: list['routines'].length,
                                         itemBuilder: (context, index) {
                                           return SizedBox(
                                             height: size.height *
-                                                .6 /
+                                                .565 /
                                                 list['routines'].length,
                                             width: size.width * .9,
 
@@ -375,7 +375,7 @@ query routines {
                                           ),
                                           fit: BoxFit.fill,
                                         )),
-                                    height: size.height * .28,
+                                    height: size.height * .22,
                                     width: size.width * .9,
                                   ),
                                   Row(

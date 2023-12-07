@@ -164,7 +164,7 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
                 ),
                 Container(
                   color: AppColor.background,
-                  height: size.height * 0.7,
+                  height: size.height * 0.66,
                   child: Query(
                       options: QueryOptions(document: gql(studentz)),
                       builder: (QueryResult result, {fetchMore, refetch}) {

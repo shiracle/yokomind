@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yoko_mind/api/api.dart';
+import 'package:yoko_mind/main.dart';
 import 'package:yoko_mind/theme/color.dart';
 
 import 'package:http/http.dart' as http;
