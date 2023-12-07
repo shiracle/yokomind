@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../api/api.dart';
+import 'package:yoko_mind/main.dart';
 
 class Food extends StatefulWidget {
   const Food({super.key});
@@ -88,10 +88,12 @@ query allFoods {
                                   border: Border.all(color: Colors.white54)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "${list['allFoods'][index]['name']}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    "${list['allFoods'][index]['name']}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
                                 ),
                               ));
                         } else {
@@ -117,10 +119,12 @@ query allFoods {
                                   border: Border.all(color: Colors.white54)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "${list['allFoods'][index]['name']}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    "${list['allFoods'][index]['name']}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
                                 ),
                               ));
                         } else {
@@ -146,10 +150,12 @@ query allFoods {
                                   border: Border.all(color: Colors.white54)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "${list['allFoods'][index]['name']}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    "${list['allFoods'][index]['name']}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
                                 ),
                               ));
                         } else {
@@ -175,10 +181,12 @@ query allFoods {
                                   border: Border.all(color: Colors.white54)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "${list['allFoods'][index]['name']}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    "${list['allFoods'][index]['name']}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
                                 ),
                               ));
                         } else {
@@ -204,10 +212,12 @@ query allFoods {
                                   border: Border.all(color: Colors.white54)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "${list['allFoods'][index]['name']}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    "${list['allFoods'][index]['name']}",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
                                 ),
                               ));
                         } else {

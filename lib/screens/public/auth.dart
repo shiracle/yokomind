@@ -25,7 +25,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   TextEditingController usernameController =
-      TextEditingController(text: "t001");
+      TextEditingController(text: "k001");
   TextEditingController passwordController =
       TextEditingController(text: "password");
 
@@ -131,8 +131,7 @@ class _AuthPageState extends State<AuthPage> {
     try {
       var url = '$UrlBase:8002/graphql';
       Map data = {
-        'query':
-            '''mutation {
+        'query': '''mutation {
   tokenAuth (username:"$u1", password:"$u2") {
     token
     success

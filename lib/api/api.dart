@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
-const String UrlBase = "http://103.143.40.163";
+import 'package:yoko_mind/main.dart';
 
 class BaseApi {
   static Future<dynamic> getResponse({
@@ -10,6 +8,7 @@ class BaseApi {
     token = '',
   }) async {
     dynamic result;
+
     var request = http.MultipartRequest(
       'POST',
       Uri.parse("$UrlBase:8002/graphql"),
@@ -27,8 +26,8 @@ class BaseApi {
 
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
-      if (res['data'] != null) {
-        result = res;
+      if (res["data"] != null) {
+        result = res["data"];
       } else {
         result = null;
       }
@@ -40,22 +39,57 @@ class BaseApi {
 }
 
 class SendRequests {
-  // static Future<Map?> queryME() async {
-  //   Map? result = {};
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final String? token = prefs.getString('token');
-  //   await BaseApi.getResponse(
-  //           operations: {"query": AuthGraphQL.me}, token: token)
-  //       .onError(
-  //     (error, stackTrace) {},
-  //   )
-  //       .then((res) {
-  // if (res['data']['me'] != null) {
-  //         result = res['data']['me'];
-  //       } else {
-  //         result = null;
-  //       }
-  //   });
-  //   return result;
-  // }
+  static Future<bool> studentHandoverByDate(
+      String token, String userCode) async {
+    bool result = false;
+    await BaseApi.getResponse(
+      operations: {
+        "query": '''
+          mutation{
+            notifyToTeacher (code: "$userCode") {
+              handOver {
+                isNotified
+              }
+            }
+          }
+        ''',
+        "variable": {}
+      },
+      token: token,
+    ).onError((error, stackTrace) => null).then((res) {
+      if (res['notifyToTeacher'] != null) {
+        if (res['notifyToTeacher']["handOver"] != null) {
+          result = res['notifyToTeacher']["handOver"]["isNotified"];
+        }
+      }
+    });
+    return result;
+  }
+
+  static Future<bool> setHandOverSuccessed(
+      String token, String userCode) async {
+    bool result = false;
+    await BaseApi.getResponse(
+      operations: {
+        "query": '''
+          mutation {
+            setHandOverSuccessed (code: "$userCode") {
+              handOver {
+                isSuccessed
+              }
+            }
+          }
+        ''',
+        "variable": {}
+      },
+      token: token,
+    ).onError((error, stackTrace) => null).then((res) {
+      if (res['setHandOverSuccessed'] != null) {
+        if (res['setHandOverSuccessed']["handOver"] != null) {
+          result = res['setHandOverSuccessed']["handOver"]["isSuccessed"];
+        }
+      }
+    });
+    return result;
+  }
 }
