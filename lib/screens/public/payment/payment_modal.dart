@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'package:v_sub/src/theme/colors.dart';
+import 'package:yoko_mind/theme/color.dart';
 
 showModal(
   context,
@@ -33,10 +31,10 @@ showModal(
               SizedBox(
                 width: size.width * 0.8,
                 height: size.height * 0.1,
-                child: Text(
+                child: const Text(
                   "Та энэхүү QR кодыг банкны апликэйшнаар уншуулан төлөөрэй Social pay-ээр уншуулах боломжгүй.",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),

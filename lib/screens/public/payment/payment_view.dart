@@ -3,8 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'package:v_sub/src/graphql/payment_ql.dart';
-import 'package:v_sub/src/screens/public/payment/payment_bank.dart.dart';
+import 'package:yoko_mind/screens/public/payment/payment_bank.dart.dart';
+import 'package:yoko_mind/screens/public/payment/payment_ql.dart';
 
 class PaymentView extends HookWidget {
   final String type;
@@ -30,8 +30,8 @@ class PaymentView extends HookWidget {
         document: gql(PaymentGraphQL.queryInvoce),
         fetchPolicy: FetchPolicy.noCache,
         onComplete: (data) {
-          if (data?['invoiceByUser'] != null) {
-            invoiceData.value = data?['invoiceByUser'];
+          if (data['invoiceByUser'] != null) {
+            invoiceData.value = data['invoiceByUser'];
           } else {
             mutation.runMutation({});
           }

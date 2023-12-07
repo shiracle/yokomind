@@ -47,6 +47,8 @@ dependencies:
   http: ^0.13.6
   image_picker: ^1.0.4
   intl: ^0.18.1
+  url_launcher: ^6.1.14
+  android_intent_plus: ^4.0.3
   
 dev_dependencies:
   flutter_test:

@@ -2,19 +2,18 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart' as flags;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yoko_mind/screens/public/payment/gradient_button.dart';
+import 'package:yoko_mind/screens/public/payment/payment_modal.dart';
 
-import 'package:v_sub/src/utils/snackBar.dart';
-import 'package:v_sub/src/app_state.dart';
-import 'package:v_sub/src/components/buttons/gradient_button.dart';
-import 'package:v_sub/src/theme/colors.dart';
-import 'package:v_sub/src/graphql/payment_ql.dart';
-import 'package:v_sub/src/screens/public/payment/payment_modal.dart';
+import 'package:yoko_mind/screens/public/payment/payment_ql.dart';
+import 'package:yoko_mind/screens/student/student_home.dart';
+import 'package:yoko_mind/theme/color.dart';
 
 class PaymentBankList extends StatefulWidget {
   final List invoice;
@@ -38,8 +37,8 @@ class _PaymentBankListState extends State<PaymentBankList> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: AppColor.background,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -47,23 +46,23 @@ class _PaymentBankListState extends State<PaymentBankList> {
         padding: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
         child: Stack(
           children: <Widget>[
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: GradientButton(
-                onTap: () {
-                  appState.signOut();
+            // Align(
+            //   alignment: Alignment.bottomLeft,
+            //   child: GradientButton(
+            //     onTap: () {
+            //       appState.signOut();
 
-                  Navigator.of(context).popUntil((route) {
-                    return route.settings.name == '/';
-                  });
-                },
-                text: "Буцах",
-                textColor: Colors.white,
-                gradient: const [Colors.teal, Colors.blue],
-                width: size.width * 0.3,
-                height: size.height * 0.065,
-              ),
-            ),
+            //       Navigator.of(context).popUntil((route) {
+            //         return route.settings.name == '/';
+            //       });
+            //     },
+            //     text: "Буцах",
+            //     textColor: Colors.white,
+            //     gradient: const [Colors.teal, Colors.blue],
+            //     width: size.width * 0.3,
+            //     height: size.height * 0.065,
+            //   ),
+            // ),
             Align(
               alignment: Alignment.bottomCenter,
               child: GradientButton(
@@ -85,17 +84,18 @@ class _PaymentBankListState extends State<PaymentBankList> {
                   fetchPolicy: FetchPolicy.noCache,
                   variables: {"id": widget.invoiceId},
                   pollInterval: const Duration(seconds: 10),
-                  onComplete: (data) {
-                    if (data?['checkInvoiceStatus'] != null) {
-                      if (data?['checkInvoiceStatus'] == 'PENDING') {
+                  onComplete: (data) async {
+                    if (data['checkInvoiceStatus'] != null) {
+                      if (data['checkInvoiceStatus'] == 'PENDING') {
                       } else {
-                        appState.setPaid(true);
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, "/home", ModalRoute.withName('/'),
-                            arguments: {
-                              "userType": widget.userData["type"],
-                              "userData": widget.userData["user"],
-                            });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        var token = prefs.getString('token') ?? '';
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => StudentView(token)));
                       }
                     }
                   },
@@ -209,7 +209,7 @@ class _PaymentBankListState extends State<PaymentBankList> {
               SizedBox(height: constraints.maxHeight * 0.05),
               Text(
                 bank["description"],
-                style: GoogleFonts.roboto(
+                style: TextStyle(
                   fontSize: constraints.maxHeight * 0.09,
                   fontWeight: FontWeight.w600,
                 ),
@@ -260,7 +260,13 @@ class _PaymentBankListState extends State<PaymentBankList> {
           launchUrl(marketUri);
         } else {
           if (context.mounted) {
-            snackBar(context, 'error');
+            Fluttertoast.showToast(
+              msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+            );
           }
         }
       }
