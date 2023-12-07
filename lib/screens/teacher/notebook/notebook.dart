@@ -156,7 +156,7 @@ class _NoteBookViewState extends State<NoteBookView> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: 178,
+                          width: size.width * .44,
                           height: 30,
                           decoration: ShapeDecoration(
                             color: Colors.white,
@@ -167,7 +167,7 @@ class _NoteBookViewState extends State<NoteBookView> {
                             ),
                           ),
                           child: const Text(
-                            'Сурагчийн мэдээлэл харах',
+                            'Сурагчийн мэдээлэл',
                             style: TextStyle(
                               color: Color(0xFF1B1464),
                               fontSize: 12,
