@@ -157,80 +157,12 @@ query studentHandoverByDate {
                                   style: ElevatedButton.styleFrom(
                                       fixedSize: Size(
                                           size.width * .5, size.height * .06)),
-                                  onPressed: () {
-                                    Future<void> ilgeeh1() async {
-                                      Map<String, dynamic> resultdata;
-                                      var response;
-                                      var u1 = econtrol.text;
-                                      try {
-                                        var url = '$UrlBase:8002/graphql';
-                                        Map data = {
-                                          'query': '''
- mutation notifyToTeacher {
-  notifyToTeacher (code: "${list['code']}") {
-    handOver {
-      isNotified
-    }
-  }
-}''', // 'password': passwordController.text,
-                                        };
-
-                                        //encode Map to JSON
-                                        var body = (data);
-
-                                        final response = await http.post(
-                                            Uri.parse(url),
-                                            headers: {
-                                              "Content-Type":
-                                                  "application/x-www-form-urlencoded"
-                                            },
-                                            body: body);
-                                        // ignore: unnecessary_null_comparison
-                                        if (response.statusCode == 200) {
-                                          final data =
-                                              json.decode(response.body);
-                                          if (data != null) {
-                                            Fluttertoast.showToast(
-                                              msg: "Амжилттай",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              gravity: ToastGravity.BOTTOM,
-                                              backgroundColor: Colors.green,
-                                              textColor: Colors.white,
-                                            );
-                                            if (context.mounted) {
-                                              Navigator.pop(context);
-                                            }
-                                          } else {
-                                            print(data);
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              gravity: ToastGravity.BOTTOM,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                            );
-                                            // if (context.mounted) {
-                                            //   Navigator.pop(context);
-                                            // }
-                                          }
-                                          // print('UnSuccessfully' + response.body);
-                                        }
-                                      } on SocketException {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                "Та интернет холболтоо шалгана уу.",
-                                            toastLength: Toast.LENGTH_LONG);
-                                        // print(ex);
-                                      }
-                                      return response;
-                                    }
-                                  },
-                                  child: const Text(
+                                  onPressed: () {},
+                                  child: Text(
                                     'Багшид мэдэгдэх',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20,
+                                      fontSize: size.height * .02,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w500,
                                       height: 0,

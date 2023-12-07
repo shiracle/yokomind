@@ -63,9 +63,7 @@ class _NestedTabBarState extends State<NestedTabBar>
         child: Scaffold(
             backgroundColor: AppColor.background,
             body: Query(
-                options: QueryOptions(
-                    document: gql(
-                        '''
+                options: QueryOptions(document: gql('''
 query routines {
   me {
     student {
@@ -124,11 +122,11 @@ query routines {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const Text(
+                                Text(
                                   'Багшийн танилцуулга',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontSize: size.height * .02,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.bold,
                                     height: 0,
@@ -198,16 +196,14 @@ query routines {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: size.height * .016,
-                      ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color(0xFF6056C3),
                         ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05,
+                            vertical: size.height * .005),
                         child: TabBar.secondary(
                           indicatorSize: TabBarIndicatorSize.tab,
                           controller: _tabController,
@@ -236,7 +232,8 @@ query routines {
                               color: AppColor.background,
                               surfaceTintColor: Colors.white,
                               margin: EdgeInsets.symmetric(
-                                  horizontal: size.width * .05, vertical: 8),
+                                  horizontal: size.width * .05,
+                                  vertical: size.height * .005),
                               child: Column(
                                 children: [
                                   Container(
