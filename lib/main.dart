@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:yoko_mind/screens/public/auth.dart';
 import 'package:yoko_mind/theme/theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/public/appState.dart';
 
@@ -11,7 +12,7 @@ void main() async {
   runApp(MyApp());
 }
 
-final String UrlBase = "http://yokomine.metasoft.mn";
+const String UrlBase = "http://yokomine.metasoft.mn";
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -24,12 +25,20 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AppState(),
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('mn'),
+        ],
         debugShowCheckedModeBanner: false,
         theme: appTheme,
-        home: AuthPage(),
+        home: const AuthPage(),
         title: (''),
         routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => new AuthPage(),
+          '/login': (BuildContext context) => const AuthPage(),
           // Dun.routeName: (_) => Dun(),
           // Irts.routeName: (_) => Irts(),
           // Plan.routeName: (_) => Plan(),
