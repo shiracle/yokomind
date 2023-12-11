@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoko_mind/main.dart';
 import 'package:yoko_mind/theme/color.dart';
@@ -41,7 +40,6 @@ class _ContactState extends State<Contact> {
       lastName = prefs.getString('lastName') ?? '';
       buleg = prefs.getString("buleg") ?? '';
     });
-    print(DateFormat('y-M-d').format(DateTime.now()));
   }
 
   @override
@@ -357,24 +355,21 @@ class _ContactState extends State<Contact> {
   }
 
   Future<void> ilgeeh() async {
-    Map<String, dynamic> resultdata;
     var response;
     var u1 = econtrol.text;
-    print(u1);
     try {
       var url = '$UrlBase:8002/graphql';
       Map data = {
         'query': '''
- mutation {
-  createContactRequest (body:"$u1") {
-    contactRequest {
-      body
-    }
-  }
-}''', // 'password': passwordController.text,
+           mutation {
+            createContactRequest (body:"$u1") {
+              contactRequest {
+                body
+              }
+            }
+          }''',
       };
 
-      //encode Map to JSON
       var body = (data);
 
       final response = await http.post(Uri.parse(url),
@@ -392,7 +387,6 @@ class _ContactState extends State<Contact> {
             textColor: Colors.white,
           );
         } else {
-          print(data);
           Fluttertoast.showToast(
             msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
             toastLength: Toast.LENGTH_LONG,
@@ -400,17 +394,12 @@ class _ContactState extends State<Contact> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
           );
-          // if (context.mounted) {
-          //   Navigator.pop(context);
-          // }
         }
-        // print('UnSuccessfully' + response.body);
       }
     } on SocketException {
       Fluttertoast.showToast(
           msg: "Та интернет холболтоо шалгана уу.",
           toastLength: Toast.LENGTH_LONG);
-      // print(ex);
     }
     return response;
   }

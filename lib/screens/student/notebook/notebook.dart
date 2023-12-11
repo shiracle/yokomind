@@ -20,6 +20,7 @@ class _NotebookStudentState extends State<NotebookStudent> {
   String firstName = "";
   String lastName = '';
   String buleg = "";
+  int age = 1;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) => _tokens());
@@ -28,16 +29,21 @@ class _NotebookStudentState extends State<NotebookStudent> {
 
   Future<void> _tokens() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? birthDate = prefs.getString("birthDate");
+
     setState(() {
       token = prefs.getString('token') ?? '';
       id = prefs.getString('studentId') ?? '';
       firstName = prefs.getString('firstName') ?? '';
       lastName = prefs.getString('lastName') ?? '';
       buleg = prefs.getString("buleg") ?? '';
+      if (birthDate != null) {
+        age =
+            DateTime.now().difference(DateTime.parse(birthDate)).inDays ~/ 365;
+      } else {
+        age = 1;
+      }
     });
-    print("token $token");
-    print("id $id");
-    print("lastnMe $lastName");
   }
 
   // final _formKey = GlobalKey<FormState>();
@@ -106,9 +112,9 @@ class _NotebookStudentState extends State<NotebookStudent> {
                               height: 0,
                             ),
                           ),
-                          const Text(
-                            '5 настай',
-                            style: TextStyle(
+                          Text(
+                            '$age настай',
+                            style: const TextStyle(
                               color: Color(0xFF1B1464),
                               fontSize: 14,
                               fontFamily: 'Inter',

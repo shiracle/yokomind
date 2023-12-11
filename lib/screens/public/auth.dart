@@ -140,6 +140,7 @@ class _AuthPageState extends State<AuthPage> {
     isStudent
     student{
         id
+        birthdate
         section{
           section
         }
@@ -181,7 +182,9 @@ class _AuthPageState extends State<AuthPage> {
                 resultdata['data']['tokenAuth']['user']['firstName'],
                 resultdata['data']['tokenAuth']['user']['lastName'],
                 resultdata['data']['tokenAuth']['user']['student']['section']
-                    ['section']);
+                    ['section'],
+                resultdata['data']['tokenAuth']['user']['student']
+                    ['birthdate']);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => StudentView(token)));
           }
@@ -201,13 +204,11 @@ class _AuthPageState extends State<AuthPage> {
           backgroundColor: Colors.red, //Colors.red,
           textColor: Colors.white,
         );
-        // print('UnSuccessfully' + response.body);
       }
     } on SocketException {
       Fluttertoast.showToast(
           msg: "Та интернет холболтоо шалгана уу.",
           toastLength: Toast.LENGTH_LONG);
-      // print(ex);
     }
     return response;
   }
@@ -218,6 +219,7 @@ class _AuthPageState extends State<AuthPage> {
     String firstName,
     String lastName,
     String buleg,
+    String birthdate,
     // String photo
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -227,6 +229,7 @@ class _AuthPageState extends State<AuthPage> {
       prefs.setString("firstName", firstName);
       prefs.setString("lastName", lastName);
       prefs.setString("buleg", buleg);
+      prefs.setString("birthDate", birthdate);
 
       // prefs.setString("name", name);
       prefs.setBool("isLogin", true);

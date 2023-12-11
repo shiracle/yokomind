@@ -621,7 +621,6 @@ class _NoteBookViewState extends State<NoteBookView> {
     );
   }
 
-// TODO: ene boltson zarim neg loading yumuu tiimerhuu yum hiiheer bol dutuu baigaa shuu
   Future<void> signUp(
     String physicalCondition,
     String defecate,
@@ -631,9 +630,7 @@ class _NoteBookViewState extends State<NoteBookView> {
     String wordToSay,
     String contactID,
   ) async {
-    Map<String, dynamic> resultdata;
     var response;
-    print(widget.id);
     try {
       var url = '$UrlBase:8002/graphql';
 
@@ -695,7 +692,6 @@ class _NoteBookViewState extends State<NoteBookView> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body)['data'];
-        print("dataa $data");
         if (data["updateStudentContactBook"]["studentContactBook"] != null) {
           Fluttertoast.showToast(
             msg: "Амжилттай",
@@ -708,7 +704,6 @@ class _NoteBookViewState extends State<NoteBookView> {
             Navigator.pop(context);
           }
         } else {
-          print(data);
           Fluttertoast.showToast(
             msg: "Алдаа гарсан тул хэсэг хугацааны дараа оролднуу!",
             toastLength: Toast.LENGTH_LONG,
