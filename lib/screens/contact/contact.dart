@@ -50,28 +50,44 @@ class _ContactState extends State<Contact> {
     return Scaffold(
         backgroundColor: AppColor.background,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * .15,
-                child: Image.asset("assets/logo.png"),
-              ),
-              Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                height: size.height * .25,
-                width: size.width * .895,
-                child: Column(
+            child: Column(children: [
+          SizedBox(
+            height: size.height * .15,
+            child: Image.asset("assets/logo.png"),
+          ),
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+            height: size.height * .25,
+            width: size.width * .895,
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: size.height * .045,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16))),
+                  child: Text(
+                    "Холбоо барих",
+                    style: TextStyle(
+                      color: AppColor.background,
+                      fontSize: size.height * .02,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
+                  ),
+                ),
+                Row(
                   children: [
                     Container(
                       alignment: Alignment.center,
-                      height: size.height * .045,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(16))),
+                      color: Colors.white,
+                      height: size.height * .04,
+                      width: size.width * .447,
                       child: Text(
-                        "Холбоо барих",
+                        "Нэгж",
                         style: TextStyle(
                           color: AppColor.background,
                           fontSize: size.height * .02,
@@ -81,217 +97,34 @@ class _ContactState extends State<Contact> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          color: Colors.white,
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "Нэгж",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
+                    Container(
+                      alignment: Alignment.center,
+                      color: Colors.white,
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "Утасны дугаар",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          color: Colors.white,
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "Утасны дугаар",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          alignment: Alignment.center,
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(16)),
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(16)),
-                              border: Border.all(color: Colors.white)),
-                          height: size.height * .04,
-                          width: size.width * .447,
-                          child: Text(
-                            "",
-                            style: TextStyle(
-                              color: AppColor.background,
-                              fontSize: size.height * .02,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    )
                   ],
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: size.height * .025,
-                    vertical: size.height * .025),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Row(
                   children: [
                     Container(
                       alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
                       height: size.height * .04,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(16))),
+                      width: size.width * .447,
                       child: Text(
-                        "Удирдлагад хэлэх үг",
+                        "",
                         style: TextStyle(
                           color: AppColor.background,
                           fontSize: size.height * .02,
@@ -303,39 +136,159 @@ class _ContactState extends State<Contact> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: const BorderRadius.vertical(
-                              bottom: Radius.circular(16))),
-                      height: size.height * .3,
-                      width: size.width * .9,
-                      child: const TextField(
-                        decoration: InputDecoration(
-                          hintText: "Text",
-                          hintStyle: TextStyle(color: Colors.white),
-                          contentPadding: EdgeInsets.all(8),
-                          border: OutlineInputBorder(),
+                          border: Border.all(color: Colors.white)),
+                      alignment: Alignment.center,
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
                         ),
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                        maxLines: 20,
-                        minLines: 2,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.white),
-                height: size.height * .04,
-                width: size.width * .5,
-                child: InkWell(
-                  onTap: () {
-                    ilgeeh();
-                  },
+                Row(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16)),
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(16)),
+                          border: Border.all(color: Colors.white)),
+                      height: size.height * .04,
+                      width: size.width * .447,
+                      child: Text(
+                        "",
+                        style: TextStyle(
+                          color: AppColor.background,
+                          fontSize: size.height * .02,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+                horizontal: size.height * .025, vertical: size.height * .025),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: size.height * .04,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16))),
                   child: Text(
-                    "Илгээх",
+                    "Удирдлагад хэлэх үг",
                     style: TextStyle(
                       color: AppColor.background,
                       fontSize: size.height * .02,
@@ -345,16 +298,69 @@ class _ContactState extends State<Contact> {
                     ),
                   ),
                 ),
-              )
-            ],
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(16))),
+                  height: size.height * .3,
+                  width: size.width * .9,
+                  child: TextField(
+                    controller: econtrol,
+                    decoration: const InputDecoration(
+                      hintText: "Text",
+                      hintStyle: TextStyle(color: Colors.white),
+                      contentPadding: EdgeInsets.all(8),
+                      border: OutlineInputBorder(),
+                    ),
+                    style: TextStyle(fontSize: 25, color: Colors.white),
+                    maxLines: 20,
+                    minLines: 2,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
+          InkWell(
+            onTap: () {
+              if (econtrol.text.isEmpty) {
+                Fluttertoast.showToast(
+                  msg: "Хэлэх зүйлээ бичнэ үү!",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                );
+              } else {
+                ilgeeh();
+              }
+            },
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), color: Colors.white),
+              height: size.height * .04,
+              width: size.width * .5,
+              child: Text(
+                "Илгээх",
+                style: TextStyle(
+                  color: AppColor.background,
+                  fontSize: size.height * .02,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                ),
+              ),
+            ),
+          ),
+        ])));
   }
 
   Future<void> ilgeeh() async {
     Map<String, dynamic> resultdata;
     var response;
     var u1 = econtrol.text;
+    print(u1);
     try {
       var url = '$UrlBase:8002/graphql';
       Map data = {
@@ -385,9 +391,6 @@ class _ContactState extends State<Contact> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
           );
-          if (context.mounted) {
-            Navigator.pop(context);
-          }
         } else {
           print(data);
           Fluttertoast.showToast(

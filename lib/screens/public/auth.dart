@@ -24,10 +24,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  TextEditingController usernameController =
-      TextEditingController(text: "k001");
-  TextEditingController passwordController =
-      TextEditingController(text: "password");
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

@@ -38,52 +38,55 @@ class _StudentViewState extends State<StudentView> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   elevation: 0,
-      //   backgroundColor: switchColorBar(context, _selectedIndex),
-      //   // actions: switchActionButton(context, _selectedIndex),
-      //   title: switchTitle(context, _selectedIndex),
-      // ),
-      bottomNavigationBar: StyleProvider(
-        style: Style(size: size.height * 0.014),
-        child: ConvexAppBar(
-          color: theme.colorScheme.primary,
-          activeColor: theme.colorScheme.primary,
-          backgroundColor: AppColor.outLine,
-          style: TabStyle.react,
-          initialActiveIndex: 0,
-          height: size.height * .075,
-          top: -15,
-          items: [
-            const TabItem(
-              icon: Icons.home,
-              title: 'Нүүр\n    ',
-            ),
-            TabItem(
-              icon: Image.asset("assets/family.png"),
-              title: 'Гараас \n  гарт',
-            ),
-            TabItem(
-              icon: Image.asset("assets/Vector.png"),
-              title: 'Харилцах \n  дэвтэр',
-            ),
-            TabItem(
-              icon: Icons.event,
-              title: ' Өдөр \nтутам',
-            ),
-            TabItem(
-              icon: Image.asset("assets/phone.png"),
-              title: ' Холбоо \n  барих',
-            ),
-          ],
-          onTap: (int i) => _onItemTapped(i),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   elevation: 0,
+        //   backgroundColor: switchColorBar(context, _selectedIndex),
+        //   // actions: switchActionButton(context, _selectedIndex),
+        //   title: switchTitle(context, _selectedIndex),
+        // ),
+        bottomNavigationBar: StyleProvider(
+          style: Style(size: size.height * 0.014),
+          child: ConvexAppBar(
+            color: theme.colorScheme.primary,
+            activeColor: theme.colorScheme.primary,
+            backgroundColor: AppColor.outLine,
+            style: TabStyle.react,
+            initialActiveIndex: 0,
+            height: size.height * .075,
+            top: -15,
+            items: [
+              const TabItem(
+                icon: Icons.home,
+                title: 'Нүүр\n    ',
+              ),
+              TabItem(
+                icon: Image.asset("assets/family.png"),
+                title: 'Гараас \n  гарт',
+              ),
+              TabItem(
+                icon: Image.asset("assets/Vector.png"),
+                title: 'Харилцах \n  дэвтэр',
+              ),
+              TabItem(
+                icon: Icons.event,
+                title: ' Өдөр \nтутам',
+              ),
+              TabItem(
+                icon: Image.asset("assets/phone.png"),
+                title: ' Холбоо \n  барих',
+              ),
+            ],
+            onTap: (int i) => _onItemTapped(i),
+          ),
         ),
-      ),
-      backgroundColor: switchColorBg(context, _selectedIndex),
-      body: SafeArea(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        backgroundColor: switchColorBg(context, _selectedIndex),
+        body: SafeArea(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
     );
   }

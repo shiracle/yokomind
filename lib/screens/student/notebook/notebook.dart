@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoko_mind/main.dart';
 import 'package:yoko_mind/theme/color.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NotebookStudent extends StatefulWidget {
   const NotebookStudent({super.key});
@@ -527,26 +530,31 @@ class _NotebookStudentState extends State<NotebookStudent> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            width: 2,
-                                            color: AppColor.outLine,
+                                    InkWell(
+                                      onTap: () {
+                                        _showDetailDialog(context, list);
+                                      },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 2,
+                                              color: AppColor.outLine,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        width: size.width * .8,
-                                        height: size.height * .15,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: list['file'] == ""
-                                              ? Image.asset("assets/logo.png")
-                                              : Image.network(
-                                                  "http://yokomine.metasoft.mn:8002/media/${list['file']}",
-                                                  fit: BoxFit.fill,
-                                                ),
-                                        ))
+                                          width: size.width * .8,
+                                          height: size.height * .15,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: list['file'] == ""
+                                                ? Image.asset("assets/logo.png")
+                                                : Image.network(
+                                                    "http://yokomine.metasoft.mn:8002/media/${list['file']}",
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                          )),
+                                    )
                                   ],
                                 ),
                               ),
@@ -561,6 +569,60 @@ class _NotebookStudentState extends State<NotebookStudent> {
                     color: Colors.white,
                   ),
                 )),
+    );
+  }
+
+  void _showDetailDialog(BuildContext context, list) {
+    final theme = Theme.of(context);
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
+        insetPadding: EdgeInsets.zero,
+        content: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: theme.dialogBackgroundColor),
+              height: 520.0,
+              width: 450,
+              margin: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: list['file'] == ""
+                      ? Image.asset("assets/logo.png")
+                      : Image.network(
+                          "http://yokomine.metasoft.mn:8002/media/${list['file']}",
+                          fit: BoxFit.cover,
+                          height: 250,
+                          width: double.infinity,
+                        ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: -5,
+              right: -5,
+              child: IconButton(
+                iconSize: 36,
+                color: theme.primaryColor,
+                icon: SvgPicture.asset(
+                  "assets/svg/close.svg",
+                  width: 32,
+                  height: 32,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
