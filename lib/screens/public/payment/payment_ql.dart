@@ -1,32 +1,28 @@
 class PaymentGraphQL {
-  static const createInvoice =
-      '''
-    mutation{
-      createInvoice{
-        invoice{
-          id
-          qpayQrImage
-          invoiceStockSet{
-            name
-            description
-            logo
-            link
+  static const createInvoice = '''
+        mutation {
+          createInvoice {
+            invoice {
+              id
+              qpayQrImage
+              invoicedeeplinkSet {
+                name
+                logo
+                link
+              }
+            }
           }
         }
-      }
-    }
-  ''';
-  static const queryInvoce =
-      '''
-    query{
-      invoiceByStudent{
+      ''';
+  static const queryInvoce = '''
+    query {
+      myInvoice {
         id
         qpayQrText
         qpayQrImage
         status
-        invoiceStockSet{
+        invoicedeeplinkSet {
           name
-          description
           logo
           link
         }
@@ -34,10 +30,9 @@ class PaymentGraphQL {
     }
   ''';
 
-  static const statusCheck =
-      """
-        query checkInvoiceStatus (\$id: Int!) {
-            checkInvoiceStatus (id: \$id)
-        }
-      """;
+  static const statusCheck = """
+    query (\$invoice: ID!){
+      checkInvoiceStatus (invoice: \$invoice)
+    }
+  """;
 }

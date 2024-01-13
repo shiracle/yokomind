@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:yoko_mind/api/api.dart';
 import 'package:yoko_mind/theme/color.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -11,20 +14,19 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   ScrollController mainController = ScrollController();
 
-  List<Map<String, dynamic>> news = [
-    {
-      "image": "assets/news1.png",
-      "decr":
-          'Ёкоминэ Монгол цэцэрлэг өөрийн брэнд гар утасны апп-ыг хэрэглээнд нэвтрүүллээ',
-      "date": "2023.10.09",
-    },
-    {
-      "image": "assets/news2.jpeg",
-      "decr":
-          'Ёкоминэ Монгол цэцэрлэгийн 2 дугаар салбарын А бүлгүүдийн "Алтан намар" өдөрлөгийн гэрэл зургуудыг хүргэж байна',
-      "date": "2023.10.09",
-    },
-  ];
+  List news = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchNews();
+  }
+
+  Future<void> fetchNews() async {
+    List allNews = await SendRequests.fetchNewsAll();
+    setState(() {
+      news = allNews;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,117 +95,148 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 Expanded(
-                    child: Scrollbar(
-                  controller: mainController,
-                  thumbVisibility: true,
-                  interactive: true,
-                  child: ListView.builder(
-                    controller: mainController,
-                    itemCount: news.length,
-                    itemBuilder: (context, index) {
-                      Map<String, dynamic> individualNews = news[index];
-                      ScrollController controller = ScrollController();
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 3),
-                        child: AspectRatio(
-                          aspectRatio: 3 / 1,
-                          child: LayoutBuilder(
-                            builder: (
-                              BuildContext context,
-                              BoxConstraints constraints,
-                            ) {
-                              return Container(
-                                clipBehavior: Clip.hardEdge,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: size.width * .03),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: constraints.maxWidth * .4,
-                                      margin: const EdgeInsets.only(
-                                          top: 10, left: 10, bottom: 10),
-                                      clipBehavior: Clip.hardEdge,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Image.asset(
-                                        individualNews["image"],
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Scrollbar(
-                                                controller: controller,
-                                                thumbVisibility: true,
-                                                child: SingleChildScrollView(
-                                                  controller: controller,
-                                                  child: Text(
-                                                    individualNews["decr"],
-                                                    style: TextStyle(
-                                                      color: theme
-                                                          .colorScheme.primary,
-                                                      fontSize:
-                                                          size.height * .014,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                  child: news.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: news.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> individualNews = news[index];
+                            String image =
+                                "http://yokomine.mn:8002/media/${individualNews["image"]}";
+                            String date = DateFormat("yyyy.MM.dd").format(
+                                DateTime.parse(individualNews["createdAt"]));
+                            return GestureDetector(
+                              onTap: () {
+                                _showDetailDialog(
+                                  context,
+                                  text: individualNews["description"],
+                                  title: individualNews["title"],
+                                  image: image,
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 3),
+                                child: AspectRatio(
+                                  aspectRatio: 3 / 1,
+                                  child: LayoutBuilder(
+                                    builder: (
+                                      BuildContext context,
+                                      BoxConstraints constraints,
+                                    ) {
+                                      return Container(
+                                        clipBehavior: Clip.hardEdge,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: size.width * .03),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 1,
+                                              color: theme.colorScheme.primary,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: constraints.maxWidth * .4,
+                                              margin: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 10,
+                                                  bottom: 10),
+                                              clipBehavior: Clip.hardEdge,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: FadeInImage.assetNetwork(
+                                                image: image,
+                                                placeholder:
+                                                    "assets/loading.gif",
+                                                placeholderFit: BoxFit.contain,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        constraints.maxHeight *
+                                                            .8,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    child: Text(
+                                                      individualNews[
+                                                          "description"],
+                                                      overflow:
+                                                          TextOverflow.fade,
+                                                      style: TextStyle(
+                                                        color: theme.colorScheme
+                                                            .primary,
+                                                        fontSize:
+                                                            size.height * .014,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                  Divider(
+                                                    height: 1,
+                                                    color: theme
+                                                        .colorScheme.primary,
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10),
+                                                      width:
+                                                          constraints.maxWidth *
+                                                              .5,
+                                                      child: Text(
+                                                        date,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: TextStyle(
+                                                          color: theme
+                                                              .colorScheme
+                                                              .primary,
+                                                          fontSize:
+                                                              size.height *
+                                                                  .015,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                          Divider(
-                                            height: 1,
-                                            color: theme.colorScheme.primary,
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            width: constraints.maxWidth * .5,
-                                            height: constraints.maxHeight * .2,
-                                            child: Text(
-                                              individualNews["date"],
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                color:
-                                                    theme.colorScheme.primary,
-                                                fontSize: size.height * .015,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      );
-                    },
-                  ),
-                ))
+                ),
+                // ),
               ],
             ),
           ),
@@ -212,4 +245,108 @@ class _HomeViewState extends State<HomeView> {
       ],
     );
   }
+}
+
+void _showDetailDialog(
+  BuildContext context, {
+  required String title,
+  required String text,
+  required String image,
+}) {
+  final theme = Theme.of(context);
+  Size size = MediaQuery.of(context).size;
+  showCupertinoModalPopup(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: Colors.transparent,
+      contentPadding: EdgeInsets.zero,
+      insetPadding: EdgeInsets.zero,
+      content: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: theme.dialogBackgroundColor),
+            height: size.height * .7,
+            width: 350,
+            margin: const EdgeInsets.all(16),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 1),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      image,
+                      height: 250,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: size.height * .38,
+                  decoration: BoxDecoration(
+                    color: theme.dialogBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Text(
+                              text,
+                              style: theme.textTheme.bodyMedium!
+                                  .copyWith(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: AppColor.basic,
+                  borderRadius: BorderRadius.circular(100)),
+              child: IconButton(
+                iconSize: 36,
+                color: theme.primaryColor,
+                icon: const Icon(
+                  Icons.close,
+                  color: AppColor.outLine,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -36,6 +36,7 @@ showModal(
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
+                    color: AppColor.outLine,
                   ),
                 ),
               )

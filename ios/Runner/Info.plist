@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Нийслэлийн 131-р цэцэрлэг</string>
+	<string>Yokomine</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleGetInfoString</key>
+	<string>UIInterfaceOrientationPortrait</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Нийслэлийн 131-р цэцэрлэг</string>
+	<string>Yokomine</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -22,36 +26,52 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationCategoryType</key>
+	<string>Photo Library Access Warning</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>QR кодыг скан хийхийн тулд энэ апп-д камерын хандалт шаардлагатай</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Энэ нь зөвхөн зураг байршуулах, харуулахын тулд таны зургийн санд хандах болно</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library Access Warning</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>qpaywallet</string>
+		<string>khanbank</string>
+		<string>statebank</string>
+		<string>statebankmongolia</string>
+		<string>xacbank</string>
+		<string>tdbbank</string>
+		<string>socialpay-payment</string>
+		<string>most</string>
+		<string>nibank</string>
+		<string>ckbank</string>
+		<string>capitronbank</string>
+		<string>bogdbank</string>
+		<string>transbank</string>
+		<string>mbank</string>
+		<string>ard</string>
+		<string>arig</string>
+		<string>monpay</string>
+	</array>
 </dict>
 </plist>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yoko_mind/theme/color.dart';
 
 class GradientButton extends StatelessWidget {
   final String text;
@@ -33,6 +34,10 @@ class GradientButton extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(size.width * 0.05),
+          border: Border.all(
+            width: 1,
+            color: AppColor.outLine,
+          ),
           boxShadow: const [
             BoxShadow(
               color: Colors.black12,

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoko_mind/main.dart';
 import 'package:yoko_mind/screens/public/appState.dart';
+import 'package:yoko_mind/screens/public/payment/payment_view.dart';
 import 'package:yoko_mind/screens/student/student_home.dart';
 import 'package:yoko_mind/screens/teacher/home/home.dart';
 import 'package:yoko_mind/theme/color.dart';
@@ -26,6 +27,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +77,18 @@ class _AuthPageState extends State<AuthPage> {
                         validationText: "",
                       ),
                       const SizedBox(height: 35),
-                      RoundedButton(
-                        onTap: () => _login(appState),
-                        label: "Нэвтрэх",
-                        height: size.height * 0.06,
-                        width: size.width * 0.6,
-                      ),
+                      loading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: AppColor.outLine,
+                              ),
+                            )
+                          : RoundedButton(
+                              onTap: () => _login(appState),
+                              label: "Нэвтрэх",
+                              height: size.height * 0.06,
+                              width: size.width * 0.6,
+                            ),
                     ],
                   ),
                 ),
@@ -90,75 +98,46 @@ class _AuthPageState extends State<AuthPage> {
         ));
   }
 
-  // Future<void> _dialogBuilder(BuildContext context) {
-  //   return showDialog<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         actionsAlignment: MainAxisAlignment.center,
-  //         actions: <Widget>[
-  //           TextButton(
-  //             style: TextButton.styleFrom(
-  //               textStyle: Theme.of(context).textTheme.labelLarge,
-  //             ),
-  //             child: const Text('teacher'),
-  //             onPressed: () {
-  //               Navigator.of(context).popAndPushNamed(TeacherHomeView.route);
-  //             },
-  //           ),
-  //           TextButton(
-  //             style: TextButton.styleFrom(
-  //               textStyle: Theme.of(context).textTheme.labelLarge,
-  //             ),
-  //             child: const Text('student'),
-  //             onPressed: () {
-  //               Navigator.of(context).popAndPushNamed(StudentView.route);
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   Future<void> _login(AppState appState) async {
     Map<String, dynamic> resultdata;
     var response;
     var u1 = usernameController.text;
     var u2 = passwordController.text;
     try {
+      setState(() {
+        loading = true;
+      });
       var url = '$UrlBase:8002/graphql';
       Map data = {
         'query': '''mutation {
-  tokenAuth (username:"$u1", password:"$u2") {
-    token
-    success
-    user {
-    firstName
-    lastName
-    isTeacher
-    isStudent
-    student{
-        id
-        birthdate
-        section{
-          section
-        }
-      }
-      teacher {
-        sectionSet {
-          section
-        }
-      }
-      
-    }
-  }
-}''', // 'password': passwordController.text,
+            tokenAuth (username:"$u1", password:"$u2") {
+              token
+              success
+              user {
+              firstName
+              lastName
+              isTeacher
+              isStudent
+              student{
+                  id
+                  birthdate
+                  isPaid
+                  section{
+                    section
+                  }
+                }
+                teacher {
+                  sectionSet {
+                    section
+                  }
+                }
+
+              }
+            }
+          }
+        ''',
       };
-
-      //encode Map to JSON
       var body = (data);
-
       final response = await http.post(Uri.parse(url),
           headers: {"Content-Type": "application/x-www-form-urlencoded"},
           body: body);
@@ -166,15 +145,15 @@ class _AuthPageState extends State<AuthPage> {
       if (response.body != null) {
         resultdata = json.decode(response.body);
         if (resultdata['data']['tokenAuth']['success'] == true) {
-          // if (resultdata['data']['tokenAuth']["user"]["student"]["isPaid"] ==
-          //     true) {
           var token = resultdata['data']['tokenAuth']['token'];
 
           if (resultdata['data']['tokenAuth']['user']['isTeacher'] == true) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TeacherHomeView(token)));
+            if (context.mounted) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TeacherHomeView(token)));
+            }
           } else {
             saveInfo(
                 resultdata['data']['tokenAuth']['token'],
@@ -185,8 +164,26 @@ class _AuthPageState extends State<AuthPage> {
                     ['section'],
                 resultdata['data']['tokenAuth']['user']['student']
                     ['birthdate']);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => StudentView(token)));
+            if (resultdata['data']['tokenAuth']["user"]["student"]["isPaid"] ==
+                true) {
+              if (context.mounted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StudentView(token)));
+              }
+            } else {
+              setState(() {
+                loading = false;
+              });
+
+              if (context.mounted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PaymentView()));
+              }
+            }
           }
         } else {
           Fluttertoast.showToast(
@@ -196,6 +193,9 @@ class _AuthPageState extends State<AuthPage> {
             backgroundColor: Colors.red, //Colors.red,
             textColor: Colors.white,
           );
+          setState(() {
+            loading = false;
+          });
         }
       } else {
         Fluttertoast.showToast(
@@ -204,11 +204,18 @@ class _AuthPageState extends State<AuthPage> {
           backgroundColor: Colors.red, //Colors.red,
           textColor: Colors.white,
         );
+        setState(() {
+          loading = false;
+        });
       }
     } on SocketException {
       Fluttertoast.showToast(
-          msg: "Та интернет холболтоо шалгана уу.",
-          toastLength: Toast.LENGTH_LONG);
+        msg: "Та интернет холболтоо шалгана уу.",
+        toastLength: Toast.LENGTH_LONG,
+      );
+      setState(() {
+        loading = false;
+      });
     }
     return response;
   }
@@ -220,7 +227,6 @@ class _AuthPageState extends State<AuthPage> {
     String lastName,
     String buleg,
     String birthdate,
-    // String photo
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -230,8 +236,6 @@ class _AuthPageState extends State<AuthPage> {
       prefs.setString("lastName", lastName);
       prefs.setString("buleg", buleg);
       prefs.setString("birthDate", birthdate);
-
-      // prefs.setString("name", name);
       prefs.setBool("isLogin", true);
     });
   }

@@ -111,13 +111,14 @@ query routines {
                               height: size.height * .07,
                               width: size.width * 0.18,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      "$UrlBase:8002/media/${list['me']['student']['section']['teacher']['photo']}",
-                                    ),
-                                    fit: BoxFit.fill,
-                                  )),
+                                borderRadius: BorderRadius.circular(16),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    "$UrlBase:8002/media/${list['me']['student']['section']['teacher']['photo']}",
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
