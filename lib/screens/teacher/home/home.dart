@@ -80,7 +80,6 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
                               final categorys = result.data!['me'];
                               final buleg = categorys['teacher']['sectionSet']
                                   [0]['section'];
-                              print("ddd--> $categorys");
                               // Profile(
                               //   email: "user@gmail.com",
                               //   name: "User",

@@ -1,10 +1,8 @@
-// import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoko_mind/api/api.dart';
@@ -38,10 +36,28 @@ class _QrReaderState extends State<QrReader> {
   @override
   Widget build(BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      // ignore: unnecessary_null_comparison
-      if (Barcode != null) {
-        controller!.pauseCamera();
-        // String? url = barcode?.code;
+      if (barcode.runtimeType == Barcode) {
+        String? url = barcode?.code;
+        if (url != null) {
+          controller!.pauseCamera();
+          Fluttertoast.showToast(
+            msg: "Хүсэлт илгээж байна . . .",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.yellow,
+            textColor: Colors.white,
+          );
+          handleQrcodeData(context, url);
+        } else {
+          Fluttertoast.showToast(
+            msg: "Буруу QR код байна. дахин оролд нуу!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red, //Colors.red,
+            textColor: Colors.white,
+          );
+          Navigator.pop(context);
+        }
       }
     });
     return Scaffold(
@@ -149,5 +165,29 @@ class _QrReaderState extends State<QrReader> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  Future<void> handleQrcodeData(BuildContext context, String code) async {
+    Map? response = await SendRequests.handoverQrCode(code);
+    if (response != null) {
+      Fluttertoast.showToast(
+        msg: "Амжилттай",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "Амжилтгүй",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
   }
 }
