@@ -11,7 +11,7 @@ void main() async {
   runApp(MyApp());
 }
 
-final String UrlBase = "http://yokomine.metasoft.mn";
+final String UrlBase = "http://yokomine.mn";
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
